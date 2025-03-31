@@ -10,6 +10,17 @@
       <nz-tab nzTitle="Divisiones"></nz-tab>
       <nz-tab nzTitle="Colaboradores"></nz-tab>
     </nz-tabset>
+    <div class="action-buttons">
+      <button nz-button nzType="primary" class="add-button" (click)="showCreateModal()">
+        <i class="fas fa-plus"></i>
+      </button>
+      <button nz-button>
+        <i class="fas fa-upload"></i>
+      </button>
+      <button nz-button>
+        <i class="fas fa-download"></i>
+      </button>
+    </div>
   </div>
 
   <!-- View Toggle -->
@@ -18,22 +29,31 @@
       <button [class.active]="activeView === 'list'" (click)="changeView('list')">Listado</button>
       <button [class.active]="activeView === 'tree'" (click)="changeView('tree')">Árbol</button>
     </div>
+    <div class="right-controls">
+      <button nz-button nz-dropdown [nzDropdownMenu]="columnMenu">
+        <span>Columnas</span>
+        <i nz-icon nzType="down"></i>
+      </button>
 
-    <div class="action-buttons">
-      <button nz-button nzType="primary" class="add-button" (click)="showCreateModal()">
-        <i nz-icon nzType="plus"></i>
-      </button>
-      <button nz-button>
-        <i nz-icon nzType="upload"></i>
-      </button>
-      <button nz-button>
-        <i nz-icon nzType="download"></i>
-      </button>
+      <!-- Search input field -->
+      <nz-input-group [nzSuffix]="suffixIconSearch">
+        <input type="text" nz-input placeholder="Buscar" [(ngModel)]="searchValue" (ngModelChange)="filterDivisions()">
+      </nz-input-group>
+      <ng-template #suffixIconSearch>
+        <i nz-icon nzType="search"></i>
+      </ng-template>
     </div>
   </div>
 
-  <!-- Filter Templates for each column -->
-  <!-- Division Name Filter Dropdown Template -->
+  <nz-dropdown-menu #columnMenu="nzDropdownMenu">
+    <ul nz-menu class="column-selector">
+      <li nz-menu-item *ngFor="let column of columnsConfig">
+        <label nz-checkbox [(ngModel)]="selectedFilters[column.key]">
+          {{ column.title }}
+        </label>
+      </li>
+    </ul>
+  </nz-dropdown-menu>
   <nz-dropdown-menu #nameFilterMenu="nzDropdownMenu">
     <div class="filter-content">
       <div class="filter-options">
@@ -178,7 +198,7 @@
                  [nzVisible]="filters.name.visible"
                  (nzVisibleChange)="filters.name.visible = $event"
                  (click)="$event.stopPropagation(); toggleFilterDropdown('name')">
-                <i nz-icon nzType="upload" [class.active-filter]="selectedFilters['name'].length > 0" class="filter-icon"></i>
+                <i class="fas fa-filter iconcolor" [class.active-filter]="selectedFilters['name'].length > 0"></i>
               </a>
             </div>
           </th>
@@ -193,7 +213,7 @@
                  [nzVisible]="filters.parentDivision.visible"
                  (nzVisibleChange)="filters.parentDivision.visible = $event"
                  (click)="$event.stopPropagation(); toggleFilterDropdown('parentDivision')">
-                <i nz-icon nzType="upload" [class.active-filter]="selectedFilters['parentDivision'].length > 0" class="filter-icon"></i>
+                <i class="fas fa-filter iconcolor" [class.active-filter]="selectedFilters['parentDivision'].length > 0"></i>
               </a>
             </div>
           </th>
@@ -208,7 +228,7 @@
                  [nzVisible]="filters.collaborators.visible"
                  (nzVisibleChange)="filters.collaborators.visible = $event"
                  (click)="$event.stopPropagation(); toggleFilterDropdown('collaborators')">
-                <i nz-icon nzType="upload" [class.active-filter]="selectedFilters['collaborators'].length > 0" class="filter-icon"></i>
+                <i class="fas fa-filter iconcolor" [class.active-filter]="selectedFilters['collaborators'].length > 0"></i>
               </a>
             </div>
           </th>
@@ -223,7 +243,7 @@
                  [nzVisible]="filters.level.visible"
                  (nzVisibleChange)="filters.level.visible = $event"
                  (click)="$event.stopPropagation(); toggleFilterDropdown('level')">
-                <i nz-icon nzType="upload" [class.active-filter]="selectedFilters['level'].length > 0" class="filter-icon"></i>
+                <i class="fas fa-filter iconcolor" [class.active-filter]="selectedFilters['level'].length > 0"></i>
               </a>
             </div>
           </th>
@@ -238,7 +258,7 @@
                  [nzVisible]="filters.subdivisions.visible"
                  (nzVisibleChange)="filters.subdivisions.visible = $event"
                  (click)="$event.stopPropagation(); toggleFilterDropdown('subdivisions')">
-                <i nz-icon nzType="upload" [class.active-filter]="selectedFilters['subdivisions'].length > 0" class="filter-icon"></i>
+                <i class="fas fa-filter iconcolor" [class.active-filter]="selectedFilters['subdivisions'].length > 0"></i>
               </a>
             </div>
           </th>
@@ -253,7 +273,7 @@
                  [nzVisible]="filters.ambassador.visible"
                  (nzVisibleChange)="filters.ambassador.visible = $event"
                  (click)="$event.stopPropagation(); toggleFilterDropdown('ambassador')">
-                <i nz-icon nzType="upload" [class.active-filter]="selectedFilters['ambassador'].length > 0" class="filter-icon"></i>
+                <i class="fas fa-filter iconcolor" [class.active-filter]="selectedFilters['ambassador'].length > 0"></i>
               </a>
             </div>
           </th>
@@ -270,7 +290,7 @@
           <td *ngIf="visibleColumns.level">{{ division.level }}</td>
           <td *ngIf="visibleColumns.subdivisions">
             {{ division.subdivisionsCount }}
-            <i nz-icon nzType="plus" class="add-icon"></i>
+
           </td>
           <td *ngIf="visibleColumns.ambassadors">{{ division.ambassadorName || '-' }}</td>
         </tr>

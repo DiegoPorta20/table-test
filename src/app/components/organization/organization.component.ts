@@ -65,7 +65,14 @@ export class OrganizationComponent implements OnInit {
     subdivisions: [],
     ambassador: []
   };
-
+  columnsConfig = [
+    { key: 'division', title: 'División' },
+    { key: 'superiorDivision', title: 'División superior' },
+    { key: 'collaborators', title: 'Colaboradores' },
+    { key: 'level', title: 'Nivel' },
+    { key: 'subdivisions', title: 'Subdivisiones' },
+    { key: 'ambassadors', title: 'Embajadores' }
+  ];
   // Selected filter values for each column
   selectedFilters: Record<string, string[]> = {
     name: [],
@@ -192,7 +199,17 @@ export class OrganizationComponent implements OnInit {
   filterDivisions(): void {
     let result = [...this.divisions];
 
-    // Apply filters for each column
+    // Apply search filter
+    if (this.searchValue) {
+      const searchLower = this.searchValue.toLowerCase();
+      result = result.filter(div => {
+        return div.name.toLowerCase().includes(searchLower) ||
+          (div.parentDivision?.name && div.parentDivision.name.toLowerCase().includes(searchLower)) ||
+          (div.ambassadorName && div.ambassadorName.toLowerCase().includes(searchLower));
+      });
+    }
+
+    // Apply existing column filters
     Object.keys(this.selectedFilters).forEach(field => {
       const selectedValues = this.selectedFilters[field as keyof typeof this.selectedFilters];
       if (selectedValues.length > 0) {

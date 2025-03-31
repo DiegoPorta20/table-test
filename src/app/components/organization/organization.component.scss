@@ -1,7 +1,7 @@
 .organization-container {
   padding: 20px;
   background-color: #fff;
-
+  min-height: 100%;
   .org-header {
     h2 {
       font-size: 22px;
@@ -13,15 +13,39 @@
 
   .org-tabs {
     margin-bottom: 20px;
-
-    ::ng-deep .ant-tabs-nav {
+    display: flex;
+    justify-content: space-between;
+    .ant-tabs-nav {
       margin-bottom: 15px;
     }
 
-    ::ng-deep .ant-tabs-tab {
+    .ant-tabs-tab {
       padding: 12px 0;
       margin-right: 32px;
       font-size: 14px;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+      }
+
+      .add-button {
+        background-color: #1890ff;
+        color: white;
+        border-color: #1890ff;
+
+        &:hover {
+          background-color: #40a9ff;
+          border-color: #40a9ff;
+        }
+      }
     }
   }
 
@@ -61,28 +85,29 @@
         }
       }
     }
-
-    .action-buttons {
+    .right-controls {
       display: flex;
-      gap: 8px;
+      gap: 10px;
+      align-items: center;
+    }
 
-      button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-      }
+    .view-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
 
-      .add-button {
-        background-color: #1890ff;
-        color: white;
-        border-color: #1890ff;
+    nz-input-group {
+      width: 250px;
+    }
 
-        &:hover {
-          background-color: #40a9ff;
-          border-color: #40a9ff;
-        }
+    .column-selector {
+      min-width: 160px;
+      padding: 8px 0;
+
+      li {
+        padding: 8px 16px;
       }
     }
   }
@@ -157,7 +182,10 @@
         color: #1890ff;
       }
     }
-
+    .iconcolor{
+        color: #b6b6b6;
+        margin-right: 15px;
+    }
     .filter-icon {
       font-size: 14px;
       margin-left: 8px;
